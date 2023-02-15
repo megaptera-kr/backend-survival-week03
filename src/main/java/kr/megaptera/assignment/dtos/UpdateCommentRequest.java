@@ -1,11 +1,15 @@
 package kr.megaptera.assignment.dtos;
 
-public class CommentDto {
+public class UpdateCommentRequest {
+
   private String id;
   private String postId;
   private String content;
 
-  public CommentDto(String id, String postId, String content) {
+  public UpdateCommentRequest() {
+  }
+
+  public UpdateCommentRequest(String id, String postId, String content) {
     this.id = id;
     this.postId = postId;
     this.content = content;
@@ -21,17 +25,5 @@ public class CommentDto {
 
   public String getContent() {
     return content;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public void setPostId(String postId) {
-    this.postId = postId;
-  }
-
-  public void setContent(String content) {
-    this.content = content;
   }
 }

@@ -57,5 +57,8 @@ public class PostController {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deletePost(@PathVariable String id) {
     postDtos.remove(Integer.parseInt(id));
+    if (newId > 0) {
+      newId--;
+    }
   }
 }
