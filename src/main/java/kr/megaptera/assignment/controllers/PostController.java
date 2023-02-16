@@ -38,6 +38,8 @@ public class PostController {
             if (!findResult.isPresent()) {
                 throw new IllegalArgumentException("don't have that item");
             }
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException(e);
         }
         return findResult.get();
     }
@@ -45,7 +47,7 @@ public class PostController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
     public String addPost(@RequestBody AddPostRequestDto addPostRequestDto){
-        PostDto postDto = new PostDto(newId++, addPostRequestDto.getTitle(), addPostRequestDto.getContent()));
+        PostDto postDto = new PostDto(newId++, addPostRequestDto.getTitle(), addPostRequestDto.getContent());
         postDtos.add(postDto);
         return "Complete!";
     }
