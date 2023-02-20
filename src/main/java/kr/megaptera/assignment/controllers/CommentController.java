@@ -2,6 +2,7 @@ package kr.megaptera.assignment.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import kr.megaptera.assignment.dtos.CommentDto;
 import kr.megaptera.assignment.dtos.CreateCommentRequest;
 import kr.megaptera.assignment.dtos.UpdateCommentRequest;
@@ -22,38 +23,38 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/comments")
 public class CommentController {
 
-  private Long newId = 0L;
+    private Long newId = 0L;
 
-  private List<CommentDto> commentDtos = new ArrayList<>();
+    private List<CommentDto> commentDtos = new ArrayList<>();
 
-  @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
-  public String createComment(@RequestBody CreateCommentRequest request) {
-    commentDtos.add(new CommentDto(newId.toString(), request.getPostId(), request.getContent()));
-    newId++;
-    return "Complete";
-  }
-
-  @GetMapping
-  public List<CommentDto> getCommentList() {
-    return commentDtos;
-  }
-
-  @PutMapping("/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void updateComment(@PathVariable String id, @RequestBody UpdateCommentRequest request) {
-    CommentDto commentDto = commentDtos.get(Integer.parseInt(id));
-    commentDto.setContent(request.getContent());
-    commentDto.setPostId(request.getPostId());
-    commentDto.setId(id);
-  }
-
-  @DeleteMapping("/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteComment(@PathVariable String id) {
-    commentDtos.remove(Integer.parseInt(id));
-    if (newId > 0) {
-      newId--;
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public String createComment(@RequestBody CreateCommentRequest request) {
+        commentDtos.add(new CommentDto(newId.toString(), request.getPostId(), request.getContent()));
+        newId++;
+        return "Complete";
     }
-  }
+
+    @GetMapping
+    public List<CommentDto> getCommentList() {
+        return commentDtos;
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateComment(@PathVariable String id, @RequestBody UpdateCommentRequest request) {
+        CommentDto commentDto = commentDtos.get(Integer.parseInt(id));
+        commentDto.setContent(request.getContent());
+        commentDto.setPostId(request.getPostId());
+        commentDto.setId(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteComment(@PathVariable String id) {
+        commentDtos.remove(Integer.parseInt(id));
+        if (newId > 0) {
+            newId--;
+        }
+    }
 }
