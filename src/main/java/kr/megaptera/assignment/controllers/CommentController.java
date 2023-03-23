@@ -29,18 +29,10 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<String> createComments(@RequestParam String postId, @RequestBody CommentDto newCommentDto) {
-        Optional<CommentDto> commentDtoOptional = commentDtos.stream()
-                .filter(e -> e.getPostId().equals(postId))
-                .findFirst();
-
-        if (commentDtoOptional.isPresent()) {
-            newCommentDto.setId(String.valueOf(++newId));
-            newCommentDto.setPostId(postId);
-            commentDtos.add(newCommentDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Complete!");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        newCommentDto.setId(String.valueOf(++newId));
+        newCommentDto.setPostId(postId);
+        commentDtos.add(newCommentDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Complete!");
     }
 
     @PutMapping("/{id}")

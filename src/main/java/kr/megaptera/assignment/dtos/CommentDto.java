@@ -6,6 +6,15 @@ public class CommentDto {
     private String postId;
     private String content;
 
+    public CommentDto() {
+    }
+
+    public CommentDto(String id, String postId, String content) {
+        this.id = id;
+        this.postId = postId;
+        this.content = content;
+    }
+
     public String getId() {
         return id;
     }

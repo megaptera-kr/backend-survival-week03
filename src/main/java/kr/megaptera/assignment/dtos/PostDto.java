@@ -7,6 +7,15 @@ public class PostDto {
 
     private String content;
 
+    public PostDto() {
+    }
+
+    public PostDto(String id, String title, String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+    }
+
     public String getId() {
         return id;
     }
