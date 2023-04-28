@@ -3,6 +3,7 @@ package kr.megaptera.assignment.controllers;
 import kr.megaptera.assignment.dtos.CommentDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/comments")
 public class CommentController {
     private Long newId = 0L;
@@ -41,7 +43,7 @@ public class CommentController {
     public ResponseEntity<String> updateComment(@PathVariable String id, @RequestParam String postId, @RequestBody CommentDto commentDto) {
         for (CommentDto comment : commentDtos) {
             if (comment.getId().equals(id) && comment.getPostId().equals(postId)) {
-                comment.setContents(commentDto.getContents());
+                comment.setContent(commentDto.getContent());
                 return ResponseEntity.noContent().build();
             }
         }

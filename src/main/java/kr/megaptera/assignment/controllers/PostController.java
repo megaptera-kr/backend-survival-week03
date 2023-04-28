@@ -2,6 +2,7 @@ package kr.megaptera.assignment.controllers;
 
 import kr.megaptera.assignment.dtos.PostDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +16,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Consumer;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/posts")
 public class PostController {
@@ -58,7 +57,7 @@ public class PostController {
         for (PostDto post : postDtos) {
             if (post.getId().equals(id)) {
                 post.setTitle(postDto.getTitle());
-                post.setContents(postDto.getContents());
+                post.setContent(postDto.getContent());
                 return ResponseEntity.noContent().build();
             }
         }

@@ -4,7 +4,7 @@ public class CommentDto {
 
     private String id;
     private String postId;
-    private String contents;
+    private String content;
 
     public String getId() {
         return id;
@@ -22,11 +22,11 @@ public class CommentDto {
         this.postId = postId;
     }
 
-    public String getContents() {
-        return contents;
+    public String getContent() {
+        return content;
     }
 
-    public void setContents(String contents) {
-        this.contents = contents;
+    public void setContent(String content) {
+        this.content = content;
     }
 }
