@@ -1,6 +1,7 @@
 package kr.megaptera.assignment.controllers;
 
 import kr.megaptera.assignment.dtos.CommentDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class CommentController {
     private List<CommentDto> commentDtos = new ArrayList<>();
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<CommentDto> commentList(
             @RequestParam String postId
     ) {
@@ -39,7 +42,8 @@ public class CommentController {
     }
 
     @PostMapping
-    public void createComment(
+    @ResponseStatus(HttpStatus.CREATED)
+    public String createComment(
             @RequestParam String postId,
             @RequestBody CommentDto commentDto
     ) {
@@ -47,9 +51,11 @@ public class CommentController {
         commentDto.setId(newId.toString());
         commentDto.setPostId(postId);
         commentDtos.add(commentDto);
+        return "Complete!";
     }
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void modifyComent(
             @PathVariable String id,
             @RequestParam String postId,
@@ -63,6 +69,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteComment(
             @PathVariable String id,
             @RequestParam String postId
