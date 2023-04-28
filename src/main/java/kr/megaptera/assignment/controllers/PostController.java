@@ -28,9 +28,6 @@ public class PostController {
     public List<PostDto> list() {
         // 전체 리스트 리턴
         System.out.println("리스트 : " + postDtos.toString());
-        if (postDtos.size() == 0) {
-            return null;
-        }
         return postDtos;
     }
 
