@@ -2,6 +2,7 @@ package kr.megaptera.assignment.controllers;
 
 import kr.megaptera.assignment.dtos.PostDto;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +53,16 @@ public class PostController {
                 .orElseThrow();
         findPost.setTitle(postDto.getTitle());
         findPost.setContent(postDto.getContent());
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    private void updatePost(@PathVariable("id") String id) {
+        PostDto findPost = postDtos.stream()
+                .filter(post -> post.getId().equals(id))
+                .findFirst()
+                .orElseThrow();
+        postDtos.remove(findPost);
     }
 
     private String incrementId() {
