@@ -2,6 +2,7 @@ package kr.megaptera.assignment.controllers;
 
 import kr.megaptera.assignment.dtos.CommentDto;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,6 +51,17 @@ public class CommentController {
                 .findFirst()
                 .orElseThrow();
         findComment.setContent(commentDto.getContent());
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    private void deleteComment(@PathVariable("id") String id, @RequestParam("postId") String postId) {
+        CommentDto findComment = commentDtos.stream()
+                .filter(comment -> comment.getId().equals(id))
+                .filter(comment -> comment.getPostId().equals(postId))
+                .findFirst()
+                .orElseThrow();
+        commentDtos.remove(findComment);
     }
 
     private String incrementId() {
