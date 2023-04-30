@@ -1,9 +1,13 @@
 package kr.megaptera.assignment.controllers;
 
 import kr.megaptera.assignment.dtos.CommentDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -12,6 +16,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
+    private final String COMPLETED = "Complete!";
+
     private Long newId = 0L;
 
     private List<CommentDto> commentDtos = new ArrayList<>();
@@ -26,4 +32,15 @@ public class CommentController {
         return findComments;
     }
 
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    private String createComment(@RequestParam("postId") String postId, @RequestBody CommentDto commentDto) {
+        commentDtos.add(new CommentDto(incrementId(), postId, commentDto.getContent()));
+        return COMPLETED;
+    }
+
+    private String incrementId() {
+        newId = Long.valueOf(commentDtos.size());
+        return String.valueOf(++newId);
+    }
 }
