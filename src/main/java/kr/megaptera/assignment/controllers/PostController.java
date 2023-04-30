@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -40,6 +41,17 @@ public class PostController {
     private String createPost(@RequestBody PostDto postDto) {
         postDtos.add(new PostDto(incrementId(), postDto.getTitle(), postDto.getContent()));
         return COMPLETED;
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    private void updatePost(@PathVariable("id") String id, @RequestBody PostDto postDto) {
+        PostDto findPost = postDtos.stream()
+                .filter(post -> post.getId().equals(id))
+                .findFirst()
+                .orElseThrow();
+        findPost.setTitle(postDto.getTitle());
+        findPost.setContent(postDto.getContent());
     }
 
     private String incrementId() {
