@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.stream.*;
 
+@RestController
+@RequestMapping("/posts")
 public class PostController {
     private Long newId = 0L;
 

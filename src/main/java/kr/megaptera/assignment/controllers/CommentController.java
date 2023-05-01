@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.stream.*;
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/comments")
 public class CommentController {
     private Long newId = 0L;
 
