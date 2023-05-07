@@ -59,7 +59,7 @@ public class CommentController {
                        @RequestParam String postId,
                        @RequestBody CommentDto commentDto){
         commentDto.setPostId(postId);
-        commentDtos.stream()
+        commentDtos = commentDtos.stream()
                 .map(i ->i.getId().equals(id) ? commentDto : i)
                 .collect(Collectors.toList());
 
