@@ -71,21 +71,48 @@ class CommentServiceTest {
 
     @DisplayName("댓글을 작성한다")
     @Test
-    void create() throws Exception {
+    void create() {
         // Given
         Post post = Post.builder()
                 .title("title1")
                 .content("content1")
                 .build();
         postRepository.saveAndFlush(post);
-        CommentDTO commentDTO = new CommentDTO(1L, 1L, "content1");
+        CommentDTO commentDTO = CommentDTO.of("content1");
 
         // When
         commentService.create(post.getId(), commentDTO);
 
         // Then
-        List<Comment> byPostId = commentRepository.findByPostId(post.getId());
+        List<Comment> byPostId = commentRepository.findByPostId(post.getId()).orElseThrow(RuntimeException::new);
         Assertions.assertThat(byPostId).hasSize(1);
     }
 
+    @DisplayName("댓글을 수정한다")
+    @Test
+    void update() {
+        // Given
+        Post post = Post.builder()
+                .title("title1")
+                .content("content1")
+                .build();
+        postRepository.saveAndFlush(post);
+        Comment comment = Comment.builder()
+                .content("content1")
+                .post(post)
+                .build();
+        Comment savedComment = commentRepository.saveAndFlush(comment);
+        CommentDTO commentDTO = CommentDTO.of(savedComment.getId(), "content2");
+
+        // When
+        commentService.update(savedComment.getId(), commentDTO);
+
+        // Then
+        Comment afterComment = commentRepository.findById(savedComment.getId())
+                .orElseThrow(RuntimeException::new);
+        Assertions.assertThat(afterComment)
+                .hasFieldOrPropertyWithValue("id", savedComment.getId())
+                .hasFieldOrPropertyWithValue("content", "content2");
+
+    }
 }

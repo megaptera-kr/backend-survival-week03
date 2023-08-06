@@ -20,7 +20,7 @@ public class CommentService {
     private final PostRepository postRepository;
 
     public List<CommentDTO> list(Long postId) {
-        List<Comment> byPostId = commentRepository.findByPostId(postId);
+        List<Comment> byPostId = commentRepository.findByPostId(postId).orElseThrow(NoSuchPostIdException::new);
         return byPostId.stream()
                 .map(comment -> new CommentDTO(comment.getId(), comment.getPost().getId(), comment.getContent()))
                 .toList();
@@ -33,5 +33,11 @@ public class CommentService {
                         .content(commentDTO.content())
                         .post(post)
                         .build());
+    }
+
+    public void update(Long id, CommentDTO commentDTO) {
+        Comment comment = commentRepository.findById(id).orElseThrow(NoSuchPostIdException::new);
+        comment.update(commentDTO.content());
+        commentRepository.save(comment);
     }
 }
