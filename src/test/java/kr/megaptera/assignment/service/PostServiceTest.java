@@ -54,7 +54,7 @@ class PostServiceTest {
         Post savedPost = postRepository.save(post);
 
         // When
-        postService.delete(1L);
+        postService.delete(savedPost.getId());
 
         // Then
         assertThrows(NoSuchPostIdException.class, () -> postService.get(savedPost.getId()));
