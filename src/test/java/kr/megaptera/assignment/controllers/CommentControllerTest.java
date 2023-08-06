@@ -1,5 +1,6 @@
 package kr.megaptera.assignment.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.megaptera.assignment.dtos.CommentDTO;
 import kr.megaptera.assignment.service.CommentService;
 import org.junit.jupiter.api.DisplayName;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -25,6 +27,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CommentControllerTest {
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @MockBean
     CommentService commentService;
@@ -51,4 +56,20 @@ class CommentControllerTest {
                 .andExpect(jsonPath("$[1].content").value("content2"));
     }
 
+    @DisplayName("댓글을 작성한다")
+    @Test
+    void create() throws Exception {
+        // Given
+        CommentDTO commentDTO = new CommentDTO(1L, 1L, "content1");
+        doNothing().when(commentService).create(1L, commentDTO);
+        String content = objectMapper.writeValueAsString(commentDTO);
+
+        // When // Then
+        mockMvc.perform(
+                        post("/comments?postId={postId}", 1L)
+                                .content(content)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
 }
