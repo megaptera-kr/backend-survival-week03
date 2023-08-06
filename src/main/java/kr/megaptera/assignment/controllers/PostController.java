@@ -1,15 +1,14 @@
 package kr.megaptera.assignment.controllers;
 
 import kr.megaptera.assignment.dtos.PostDTO;
-import kr.megaptera.assignment.repository.PostRepository;
 import kr.megaptera.assignment.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,7 +22,13 @@ public class PostController {
     private Long newId = 0L;
 
     // TODO 삭제
-    private List<PostDTO> postDtos = new ArrayList<>();
+//    private List<PostDTO> postDtos = new ArrayList<>();
+
+    @GetMapping
+    public List<PostDTO> list() {
+        List<PostDTO> postDTOs = postService.list();
+        return postDTOs;
+    }
 
     @PostMapping
     public String create(@RequestBody PostDTO postDTO) {
@@ -31,4 +36,5 @@ public class PostController {
 
         return SUCCESS_MESSAGE;
     }
+
 }
