@@ -5,6 +5,7 @@ import kr.megaptera.assignment.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,7 +46,16 @@ public class CommentController {
             @PathVariable Long id,
             @RequestParam Long postId,
             @RequestBody CommentDTO commentDTO) {
-        commentService.update(id, commentDTO);
+        commentService.update(id, postId, commentDTO);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> delete(
+            @PathVariable Long id,
+            @RequestParam Long postId
+    ) {
+        commentService.delete(id, postId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
