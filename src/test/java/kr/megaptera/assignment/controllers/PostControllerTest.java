@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
@@ -46,6 +45,23 @@ class PostControllerTest {
                 .andExpect(jsonPath("$[0].id").value(1L))
                 .andExpect(jsonPath("$[0].title").value("title1"))
                 .andExpect(jsonPath("$[0].content").value("content1"));
+
+    }
+
+    @DisplayName("특정 게시글을 조회한다")
+    @Test
+    void getPost() throws Exception {
+        // given
+        PostDTO postDTO = new PostDTO(1L, "title1", "content1");
+        when(postService.get(1L)).thenReturn(postDTO);
+
+        // when // then
+        mockMvc.perform(get("/posts/{id}", "1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.title").value("title1"))
+                .andExpect(jsonPath("$.content").value("content1"));
 
     }
 
