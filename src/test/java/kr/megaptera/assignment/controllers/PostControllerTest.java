@@ -15,9 +15,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -94,8 +96,25 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().string(expectedContent));
     }
 
+    @DisplayName("게시글을 수정한다")
+    @Test
+    void update() throws Exception {
+        // given
+        PostDTO postDTO = new PostDTO(1L, "title1", "content1");
+        String content = objectMapper.writeValueAsString(postDTO);
+        doNothing().when(postService).update(postDTO, 1L);
+
+        // when // then
+        mockMvc.perform(
+                        put("/posts/{id}", 1L)
+                                .content(content)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+    }
 }
