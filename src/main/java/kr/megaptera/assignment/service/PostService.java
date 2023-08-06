@@ -2,13 +2,13 @@ package kr.megaptera.assignment.service;
 
 import kr.megaptera.assignment.domain.Post;
 import kr.megaptera.assignment.dtos.PostDTO;
+import kr.megaptera.assignment.exception.NoSuchPostIdException;
 import kr.megaptera.assignment.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -34,5 +34,10 @@ public class PostService {
                 ).collect(Collectors.toList());
 
         return postDTOs;
+    }
+
+    public PostDTO get(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(NoSuchPostIdException::new);
+        return new PostDTO(post.getId(), post.getTitle(), post.getContent());
     }
 }
