@@ -2,6 +2,7 @@ package kr.megaptera.assignment.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.megaptera.assignment.dtos.PostDTO;
+import kr.megaptera.assignment.exception.NoSuchPostIdException;
 import kr.megaptera.assignment.service.PostService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,6 +64,19 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.title").value("title1"))
                 .andExpect(jsonPath("$.content").value("content1"));
 
+    }
+
+    @DisplayName("존재하지 않는 게시글의 id로 조회하면 예외가 발생한다")
+    @Test
+    void getPost2() throws Exception {
+        // given
+        when(postService.get(1L)).thenThrow(new NoSuchPostIdException());
+
+        // when // then
+        mockMvc.perform(get("/posts/{id}", "1"))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("해당 id의 게시글은 존재하지 않습니다"));
     }
 
     @DisplayName("게시글을 생성한다")
