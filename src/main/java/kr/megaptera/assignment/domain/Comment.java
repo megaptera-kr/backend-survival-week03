@@ -27,6 +27,10 @@ public class Comment {
         this.post = post;
     }
 
+    public void update(String content) {
+        this.content = content;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
