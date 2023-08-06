@@ -14,9 +14,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -116,5 +116,19 @@ class PostControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
+    }
+
+    @DisplayName("게시글을 삭제한다")
+    @Test
+    void deletePost() throws Exception {
+        // Given
+        doNothing().when(postService).delete(1L);
+
+        // When // Then
+        mockMvc.perform(
+                        delete("/posts/{id}", 1L)
+                )
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 }
