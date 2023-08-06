@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -25,9 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;
-    private Long newId = 0L;
-
-    private List<CommentDTO> commentDtos = new ArrayList<>();
 
     @GetMapping
     public ResponseEntity<List<CommentDTO>> list(@RequestParam Long postId) {

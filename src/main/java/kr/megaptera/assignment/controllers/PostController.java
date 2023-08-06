@@ -25,12 +25,6 @@ public class PostController {
     public static final String SUCCESS_MESSAGE = "Complete!";
     private final PostService postService;
 
-    // TODO 삭제
-    private Long newId = 0L;
-
-    // TODO 삭제
-//    private List<PostDTO> postDtos = new ArrayList<>();
-
     @GetMapping
     public ResponseEntity<List<PostDTO>> list() {
         List<PostDTO> postDTOs = postService.list();
