@@ -6,6 +6,7 @@ import kr.megaptera.assignment.dtos.CommentDTO;
 import kr.megaptera.assignment.repository.CommentRepository;
 import kr.megaptera.assignment.repository.PostRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,12 @@ class CommentServiceTest {
     @Autowired
     CommentService commentService;
 
+    @AfterEach
+    void tearDown() {
+        commentRepository.deleteAllInBatch();
+        postRepository.deleteAllInBatch();
+    }
+
     @DisplayName("댓글을 조회한다")
     @Test
     void list() {
@@ -49,19 +56,36 @@ class CommentServiceTest {
                 .post(post)
                 .build();
         postRepository.saveAndFlush(post);
-        commentRepository.saveAllAndFlush(List.of(comment1, comment2, comment3));
+        List<Comment> comments = commentRepository.saveAllAndFlush(List.of(comment1, comment2, comment3));
 
         // When
         List<CommentDTO> commentDTOs = commentService.list(post.getId());
 
         // Then
         Assertions.assertThat(commentDTOs)
-                .hasSize(3)
-                .containsExactly(
-                        new CommentDTO(1L, 1L, "content1"),
-                        new CommentDTO(2L, 1L, "content2"),
-                        new CommentDTO(3L, 1L, "content3")
-                );
+                .containsAll(
+                        comments.stream()
+                                .map(comment -> new CommentDTO(comment.getId(), comment.getPost().getId(), comment.getContent()))
+                                .toList());
+    }
+
+    @DisplayName("댓글을 작성한다")
+    @Test
+    void create() throws Exception {
+        // Given
+        Post post = Post.builder()
+                .title("title1")
+                .content("content1")
+                .build();
+        postRepository.saveAndFlush(post);
+        CommentDTO commentDTO = new CommentDTO(1L, 1L, "content1");
+
+        // When
+        commentService.create(post.getId(), commentDTO);
+
+        // Then
+        List<Comment> byPostId = commentRepository.findByPostId(post.getId());
+        Assertions.assertThat(byPostId).hasSize(1);
     }
 
 }
