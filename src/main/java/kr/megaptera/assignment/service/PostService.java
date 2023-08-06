@@ -47,4 +47,9 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(NoSuchPostIdException::new);
         post.update(postDTO.title(), postDTO.content());
     }
+
+    public void delete(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(NoSuchPostIdException::new);
+        postRepository.delete(post);
+    }
 }
