@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
@@ -62,7 +62,7 @@ class CommentServiceTest {
         List<CommentDTO> commentDTOs = commentService.list(post.getId());
 
         // Then
-        Assertions.assertThat(commentDTOs)
+        assertThat(commentDTOs)
                 .containsAll(
                         comments.stream()
                                 .map(comment -> new CommentDTO(comment.getId(), comment.getPost().getId(), comment.getContent()))
@@ -84,8 +84,8 @@ class CommentServiceTest {
         commentService.create(post.getId(), commentDTO);
 
         // Then
-        List<Comment> byPostId = commentRepository.findByPostId(post.getId()).orElseThrow(RuntimeException::new);
-        Assertions.assertThat(byPostId).hasSize(1);
+        Comment comment = commentRepository.findByPostId(post.getId()).orElseThrow(RuntimeException::new).get(0);
+        assertThat(comment).hasFieldOrPropertyWithValue("content", commentDTO.content());
     }
 
     @DisplayName("댓글을 수정한다")
@@ -105,14 +105,14 @@ class CommentServiceTest {
         CommentDTO commentDTO = CommentDTO.of(savedComment.getId(), "content2");
 
         // When
-        commentService.update(savedComment.getId(), commentDTO);
+        commentService.update(savedComment.getId(), savedComment.getPost().getId(), commentDTO);
 
         // Then
         Comment afterComment = commentRepository.findById(savedComment.getId())
                 .orElseThrow(RuntimeException::new);
-        Assertions.assertThat(afterComment)
+        assertThat(afterComment)
                 .hasFieldOrPropertyWithValue("id", savedComment.getId())
-                .hasFieldOrPropertyWithValue("content", "content2");
+                .hasFieldOrPropertyWithValue("content", commentDTO.content());
 
     }
 }

@@ -38,16 +38,17 @@ class PostControllerTest {
     @Test
     void list() throws Exception {
         // given
-        List<PostDTO> postDTOs = List.of(new PostDTO(1L, "title1", "content1"));
+        PostDTO postDTO = new PostDTO(1L, "title1", "content1");
+        List<PostDTO> postDTOs = List.of(postDTO);
         when(postService.list()).thenReturn(postDTOs);
 
         // when // then
         mockMvc.perform(get("/posts"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1L))
-                .andExpect(jsonPath("$[0].title").value("title1"))
-                .andExpect(jsonPath("$[0].content").value("content1"));
+                .andExpect(jsonPath("$[0].id").value(postDTO.id()))
+                .andExpect(jsonPath("$[0].title").value(postDTO.title()))
+                .andExpect(jsonPath("$[0].content").value(postDTO.content()));
 
     }
 
@@ -55,16 +56,17 @@ class PostControllerTest {
     @Test
     void getPost() throws Exception {
         // given
-        PostDTO postDTO = new PostDTO(1L, "title1", "content1");
-        when(postService.get(1L)).thenReturn(postDTO);
+        long postId = 1L;
+        PostDTO postDTO = new PostDTO(postId, "title1", "content1");
+        when(postService.get(postId)).thenReturn(postDTO);
 
         // when // then
-        mockMvc.perform(get("/posts/{id}", "1"))
+        mockMvc.perform(get("/posts/{id}", postId))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.title").value("title1"))
-                .andExpect(jsonPath("$.content").value("content1"));
+                .andExpect(jsonPath("$.id").value(postDTO.id()))
+                .andExpect(jsonPath("$.title").value(postDTO.title()))
+                .andExpect(jsonPath("$.content").value(postDTO.content()));
 
     }
 
@@ -72,13 +74,15 @@ class PostControllerTest {
     @Test
     void getPost2() throws Exception {
         // given
-        when(postService.get(1L)).thenThrow(new NoSuchPostIdException());
+        long postId = 1L;
+        String exceptionMessage = "해당 id의 게시글은 존재하지 않습니다";
+        when(postService.get(postId)).thenThrow(new NoSuchPostIdException());
 
         // when // then
-        mockMvc.perform(get("/posts/{id}", "1"))
+        mockMvc.perform(get("/posts/{id}", postId))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("해당 id의 게시글은 존재하지 않습니다"));
+                .andExpect(jsonPath("$.message").value(exceptionMessage));
     }
 
     @DisplayName("게시글을 생성한다")
@@ -104,13 +108,14 @@ class PostControllerTest {
     @Test
     void update() throws Exception {
         // given
-        PostDTO postDTO = new PostDTO(1L, "title1", "content1");
+        long postId = 1L;
+        PostDTO postDTO = new PostDTO(postId, "title1", "content1");
         String content = objectMapper.writeValueAsString(postDTO);
-        doNothing().when(postService).update(postDTO, 1L);
+        doNothing().when(postService).update(postDTO, postId);
 
         // when // then
         mockMvc.perform(
-                        put("/posts/{id}", 1L)
+                        put("/posts/{id}", postId)
                                 .content(content)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -122,11 +127,12 @@ class PostControllerTest {
     @Test
     void deletePost() throws Exception {
         // Given
-        doNothing().when(postService).delete(1L);
+        long postId = 1L;
+        doNothing().when(postService).delete(postId);
 
         // When // Then
         mockMvc.perform(
-                        delete("/posts/{id}", 1L)
+                        delete("/posts/{id}", postId)
                 )
                 .andDo(print())
                 .andExpect(status().isNoContent());

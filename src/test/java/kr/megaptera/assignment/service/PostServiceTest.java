@@ -31,15 +31,16 @@ class PostServiceTest {
                 .content("content1")
                 .build();
         Post savedPost = postRepository.save(post);
+        PostDTO postDTO = PostDTO.of("title2", "content2");
 
         // when
-        postService.update(PostDTO.of("title2", "content2"), savedPost.getId());
+        postService.update(postDTO, savedPost.getId());
 
         // then
         PostDTO actual = postService.get(savedPost.getId());
         assertThat(actual)
-                .hasFieldOrPropertyWithValue("title", "title2")
-                .hasFieldOrPropertyWithValue("content", "content2");
+                .hasFieldOrPropertyWithValue("title", postDTO.title())
+                .hasFieldOrPropertyWithValue("content", postDTO.content());
 
     }
 

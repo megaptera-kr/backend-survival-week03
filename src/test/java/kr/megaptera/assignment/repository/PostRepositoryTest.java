@@ -1,7 +1,6 @@
 package kr.megaptera.assignment.repository;
 
 import kr.megaptera.assignment.domain.Post;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +28,8 @@ class PostRepositoryTest {
 
         // then
         assertThat(savedPost)
-                .hasFieldOrPropertyWithValue("title", "title1")
-                .hasFieldOrPropertyWithValue("content", "content1");
+                .hasFieldOrPropertyWithValue("title", post.getTitle())
+                .hasFieldOrPropertyWithValue("content", post.getContent());
     }
 
 }
