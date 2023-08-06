@@ -3,11 +3,15 @@ package kr.megaptera.assignment.controllers;
 import kr.megaptera.assignment.dtos.PostDTO;
 import kr.megaptera.assignment.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -37,11 +41,23 @@ public class PostController {
         return postDTO;
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public String create(@RequestBody PostDTO postDTO) {
         postService.create(postDTO);
 
         return SUCCESS_MESSAGE;
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> update(
+            @RequestBody PostDTO postDTO,
+            @PathVariable Long id) {
+        postService.update(postDTO, id);
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
 }
