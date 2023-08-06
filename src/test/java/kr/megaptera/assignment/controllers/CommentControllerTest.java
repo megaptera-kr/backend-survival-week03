@@ -13,10 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -71,5 +69,23 @@ class CommentControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated());
+    }
+
+    @DisplayName("댓글을 수정한다")
+    @Test
+    void update() throws Exception {
+        // Given
+        CommentDTO commentDTO = CommentDTO.of(1L, "content1");
+        doNothing().when(commentService).update(1L, commentDTO);
+        String content = objectMapper.writeValueAsString(commentDTO);
+
+        // When // Then
+        mockMvc.perform(
+                        put("/comments/{id}?postId={postId}", 1L, 1L)
+                                .content(content)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
     }
 }
