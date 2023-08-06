@@ -5,7 +5,6 @@ import kr.megaptera.assignment.domain.Post;
 import kr.megaptera.assignment.dtos.CommentDTO;
 import kr.megaptera.assignment.repository.CommentRepository;
 import kr.megaptera.assignment.repository.PostRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -114,5 +113,27 @@ class CommentServiceTest {
                 .hasFieldOrPropertyWithValue("id", savedComment.getId())
                 .hasFieldOrPropertyWithValue("content", commentDTO.content());
 
+    }
+
+    @DisplayName("댓글을 삭제한다")
+    @Test
+    void delete() {
+        // Given
+        Post post = Post.builder()
+                .title("title1")
+                .content("content1")
+                .build();
+        postRepository.saveAndFlush(post);
+        Comment comment = Comment.builder()
+                .content("content1")
+                .post(post)
+                .build();
+        Comment savedComment = commentRepository.saveAndFlush(comment);
+
+        // When
+        commentService.delete(savedComment.getId(), savedComment.getPost().getId());
+
+        // Then
+        assertThat(commentRepository.existsById(savedComment.getId())).isFalse();
     }
 }
