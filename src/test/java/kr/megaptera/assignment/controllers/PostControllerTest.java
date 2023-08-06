@@ -75,7 +75,7 @@ class PostControllerTest {
     void getPost2() throws Exception {
         // given
         long postId = 1L;
-        String exceptionMessage = "해당 id의 게시글은 존재하지 않습니다";
+        String exceptionMessage = (new NoSuchPostIdException()).getMessage();
         when(postService.get(postId)).thenThrow(new NoSuchPostIdException());
 
         // when // then
