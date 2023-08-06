@@ -16,11 +16,14 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Setter
     private String title;
 
-    @Setter
     private String content;
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 
     @Builder
     private Post(String title, String content) {
