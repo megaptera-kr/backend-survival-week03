@@ -15,6 +15,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -95,5 +96,21 @@ class CommentControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
+    }
+
+    @DisplayName("댓글을 삭제한다")
+    @Test
+    void deleteComment() throws Exception{
+        // Given
+        long commentId = 1L;
+        long postId = 1L;
+        doNothing().when(commentService).delete(commentId, postId);
+
+        // When // Then
+        mockMvc.perform(
+                        delete("/comments/{id}?postId={postId}", commentId, postId)
+                )
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 }
