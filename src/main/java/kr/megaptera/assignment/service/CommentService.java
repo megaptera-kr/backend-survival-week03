@@ -3,6 +3,7 @@ package kr.megaptera.assignment.service;
 import kr.megaptera.assignment.domain.Comment;
 import kr.megaptera.assignment.domain.Post;
 import kr.megaptera.assignment.dtos.CommentDTO;
+import kr.megaptera.assignment.exception.NoSuchCommentIdException;
 import kr.megaptera.assignment.exception.NoSuchPostIdException;
 import kr.megaptera.assignment.repository.CommentRepository;
 import kr.megaptera.assignment.repository.PostRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Transactional
 @Service
@@ -20,7 +22,7 @@ public class CommentService {
     private final PostRepository postRepository;
 
     public List<CommentDTO> list(Long postId) {
-        List<Comment> byPostId = commentRepository.findByPostId(postId).orElseThrow(NoSuchPostIdException::new);
+        List<Comment> byPostId = commentRepository.findByPostId(postId).orElseThrow(NoSuchCommentIdException::new);
         return byPostId.stream()
                 .map(comment -> new CommentDTO(comment.getId(), comment.getPost().getId(), comment.getContent()))
                 .toList();
@@ -35,9 +37,20 @@ public class CommentService {
                         .build());
     }
 
-    public void update(Long id, CommentDTO commentDTO) {
-        Comment comment = commentRepository.findById(id).orElseThrow(NoSuchPostIdException::new);
+    public void update(Long id, Long postId, CommentDTO commentDTO) {
+        Comment comment = commentRepository.findById(id).orElseThrow(NoSuchCommentIdException::new);
+        if (!Objects.equals(comment.getPost().getId(), postId)) {
+            throw new NoSuchCommentIdException();
+        }
         comment.update(commentDTO.content());
         commentRepository.save(comment);
+    }
+
+    public void delete(Long id, Long postId) {
+        Comment comment = commentRepository.findById(id).orElseThrow(NoSuchCommentIdException::new);
+        if (!Objects.equals(comment.getPost().getId(), postId)) {
+            throw new NoSuchCommentIdException();
+        }
+        commentRepository.delete(comment);
     }
 }
