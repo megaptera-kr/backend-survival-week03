@@ -4,6 +4,7 @@ import kr.megaptera.assignment.dtos.PostDTO;
 import kr.megaptera.assignment.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,12 @@ public class PostController {
     public List<PostDTO> list() {
         List<PostDTO> postDTOs = postService.list();
         return postDTOs;
+    }
+
+    @GetMapping("/{id}")
+    public PostDTO get(@PathVariable Long id) {
+        PostDTO postDTO = postService.get(id);
+        return postDTO;
     }
 
     @PostMapping
