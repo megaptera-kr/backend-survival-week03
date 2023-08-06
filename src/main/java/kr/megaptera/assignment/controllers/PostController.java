@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,34 +29,30 @@ public class PostController {
 //    private List<PostDTO> postDtos = new ArrayList<>();
 
     @GetMapping
-    public List<PostDTO> list() {
+    public ResponseEntity<List<PostDTO>> list() {
         List<PostDTO> postDTOs = postService.list();
-        return postDTOs;
+        return new ResponseEntity<>(postDTOs, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public PostDTO get(@PathVariable Long id) {
+    public ResponseEntity<PostDTO> get(@PathVariable Long id) {
         PostDTO postDTO = postService.get(id);
-        return postDTO;
+        return new ResponseEntity<>(postDTO, HttpStatus.OK);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public String create(@RequestBody PostDTO postDTO) {
+    public ResponseEntity<String> create(@RequestBody PostDTO postDTO) {
         postService.create(postDTO);
 
-        return SUCCESS_MESSAGE;
+        return new ResponseEntity<>(SUCCESS_MESSAGE, HttpStatus.CREATED);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(
             @RequestBody PostDTO postDTO,
             @PathVariable Long id) {
         postService.update(postDTO, id);
-        return ResponseEntity
-                .noContent()
-                .build();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

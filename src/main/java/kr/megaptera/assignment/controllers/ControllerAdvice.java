@@ -3,6 +3,7 @@ package kr.megaptera.assignment.controllers;
 import kr.megaptera.assignment.exception.NoSuchPostIdException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,7 +15,7 @@ public class ControllerAdvice {
     @ExceptionHandler(NoSuchPostIdException.class)
     public ResponseEntity<ResponseMessage> noSuchPostIdException(NoSuchPostIdException e) {
         log.info("exceptionHandler noSuchPostIdException");
-        return new ResponseEntity<>(new ResponseMessage(e.getMessage()), HttpStatusCode.valueOf(400));
+        return new ResponseEntity<>(new ResponseMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @Getter
