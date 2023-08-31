@@ -72,11 +72,16 @@ public class CommentController {
     @CrossOrigin("http://localhost:8000")
     @DeleteMapping("{id}")
     public void delete(@PathVariable String id){
-        for (CommentDto c : commentDtos){
-            if (c.getId().equals(id)){
-                commentDtos.remove(c);
-            }
-        }
+//        for (CommentDto c : commentDtos){
+//            if (c.getId().equals(id)){
+//                commentDtos.remove(c);
+//            }
+//        }
+        CommentDto commentDto = commentDtos.stream()
+                .filter(i -> i.getId().equals(id))
+                .findFirst()
+                .get();
+        commentDtos.remove(commentDto);
     }
 
 }
