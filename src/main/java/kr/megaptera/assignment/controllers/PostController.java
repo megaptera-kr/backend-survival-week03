@@ -1,7 +1,9 @@
 package kr.megaptera.assignment.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.websocket.server.PathParam;
 import kr.megaptera.assignment.dtos.PostDto;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,16 +23,16 @@ import java.util.List;
 @RequestMapping("/posts")
 @RestController
 public class PostController {
+
     private Long newId = 0L;
     private List<PostDto> postDtos = new ArrayList<>();
 
-    @CrossOrigin("http://localhost:8000")
+
     @GetMapping
     public List<PostDto> getList(){
         return postDtos;
     }
 
-    @CrossOrigin("http://localhost:8000")
     @GetMapping("/{id}")
     public PostDto getDetail(@PathVariable String id){
 //        PostDto postDto = postDtos.get(Integer.parseInt(id));
@@ -40,7 +44,6 @@ public class PostController {
         return postDto;
     }
 
-    @CrossOrigin("http://localhost:8000")
     @PostMapping
     public PostDto create(@RequestBody PostDto postDto){
         postDto.setId(String.valueOf(newId++));
@@ -49,7 +52,6 @@ public class PostController {
         return postDto;
     }
 
-    @CrossOrigin("http://localhost:8000")
     @DeleteMapping("{id}")
     public PostDto delete(@PathVariable String id){
         PostDto postDto = postDtos.stream()
@@ -60,7 +62,6 @@ public class PostController {
         return postDto;
     }
 
-    @CrossOrigin("http://localhost:8000")
     @PutMapping("{id}")
     public PostDto modify(
             @PathVariable String id,
@@ -77,5 +78,6 @@ public class PostController {
         return postDto;
     }
 
-
 }
+
+

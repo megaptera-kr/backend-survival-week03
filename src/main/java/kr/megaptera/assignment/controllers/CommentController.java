@@ -23,10 +23,7 @@ public class CommentController {
     private Long newId = 0L;
     private List<CommentDto> commentDtos = new ArrayList<>();
 
-//    public List<CommentDto> getList(){
-//
-//    }
-    @CrossOrigin("http://localhost:8000")
+
     @GetMapping
     public List<CommentDto> getList(@RequestParam String postId){
         List<CommentDto> tmp_commentDtos = new ArrayList<>();
@@ -40,7 +37,6 @@ public class CommentController {
         return tmp_commentDtos;
     }
 
-    @CrossOrigin("http://localhost:8000")
     @PostMapping
     public String create(
             @RequestBody CommentDto commentDto,
@@ -52,7 +48,6 @@ public class CommentController {
         return "Complete!";
     }
 
-    @CrossOrigin("http://localhost:8000")
     @PutMapping("{id}")
     public void modify(
             @RequestBody CommentDto commentDto,
@@ -69,9 +64,9 @@ public class CommentController {
     }
 
     // *** ERROR: fail occurs, when first try ***
-    @CrossOrigin("http://localhost:8000")
     @DeleteMapping("{id}")
     public void delete(@PathVariable String id){
+//        1)
 //        for (CommentDto c : commentDtos){
 //            if (c.getId().equals(id)){
 //                commentDtos.remove(c);
