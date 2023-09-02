@@ -1,8 +1,9 @@
 package kr.megaptera.assignment.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.megaptera.assignment.dtos.NoIdPostDto;
 import kr.megaptera.assignment.dtos.PostDto;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,16 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/posts")
 public class PostController {
     private Long newId = 0L;
     private List<PostDto> postDtos = new ArrayList<>();
-    private final ObjectMapper objectMapper;
-
-    public PostController(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
 
     @GetMapping
     public List<PostDto> list() {
@@ -45,8 +42,14 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String create(@RequestBody PostDto postDto) {
-        postDtos.add(postDto);
+    public String create(@RequestBody NoIdPostDto noIdPostDto) {
+        String id = String.valueOf(newId);
+        String title = noIdPostDto.getTitle();
+        String content = noIdPostDto.getContent();
+
+        increment();
+
+        postDtos.add(new PostDto(id, title, content));
         return "Complete!";
     }
 
@@ -72,5 +75,9 @@ public class PostController {
                 return;
             }
         }
+    }
+
+    private void increment() {
+        newId++;
     }
 }
