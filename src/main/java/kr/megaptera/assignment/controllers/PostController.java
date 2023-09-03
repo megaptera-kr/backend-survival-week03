@@ -47,7 +47,7 @@ public class PostController {
         String title = noIdPostDto.getTitle();
         String content = noIdPostDto.getContent();
 
-        increment();
+        increaseId();
 
         postDtos.add(new PostDto(id, title, content));
         return "Complete!";
@@ -77,7 +77,7 @@ public class PostController {
         }
     }
 
-    private void increment() {
+    private void increaseId() {
         newId++;
     }
 }
