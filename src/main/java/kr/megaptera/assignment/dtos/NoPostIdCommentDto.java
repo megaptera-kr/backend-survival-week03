@@ -1,25 +1,19 @@
 package kr.megaptera.assignment.dtos;
 
-public class CommentDto {
+public class NoPostIdCommentDto {
     private String id;
-    private String postId;
     private String content;
 
-    public CommentDto() {
+    public NoPostIdCommentDto() {
     }
 
-    public CommentDto(String id, String postId, String content) {
+    public NoPostIdCommentDto(String id, String content) {
         this.id = id;
-        this.postId = postId;
         this.content = content;
     }
 
     public String getId() {
         return id;
-    }
-
-    public String getPostId() {
-        return postId;
     }
 
     public String getContent() {
