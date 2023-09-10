@@ -20,7 +20,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin("http://localhost:8000")
 @RequestMapping("/posts")
 @RestController
 public class PostController {
