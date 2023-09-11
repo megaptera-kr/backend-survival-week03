@@ -10,7 +10,7 @@
     "serve": "servor dist index.html 8000 --reload",
     "codeceptjs:headless": "HEADLESS=true codeceptjs run --steps",
     "codeceptjs": "codeceptjs run --steps",
-    "test": "concurrently -s first -k 'npm run serve' 'npm run codeceptjs'",
+    "test": "concurrently -s first -k \"npm run serve\" \"npm run codeceptjs\"", 
     "ci": "concurrently -s first -k 'npm run server' 'npm run serve' 'sleep 30 && npm run codeceptjs:headless'",
     "watch:test": "jest --watchAll"
   },
