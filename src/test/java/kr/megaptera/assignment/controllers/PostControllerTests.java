@@ -31,8 +31,7 @@ class PostControllerTests {
 
     @DisplayName("게시글 상세 조회")
     @Test
-    void getPost() {
-        int postId = 1;
+        int postId = 0;
         String requestPath = "/posts/%d".formatted(postId);
 
         ExtractableResponse<Response> response = ApiClient._get(requestPath);
@@ -58,7 +57,7 @@ class PostControllerTests {
     @DisplayName("게시글 수정")
     @Test
     void putPosts() {
-        int postId = 1;
+        int postId = 0;
         String requestPath = "/posts/%d".formatted(postId);
 
         HashMap<String, String> requestBody = new HashMap<>() {{
@@ -74,7 +73,8 @@ class PostControllerTests {
     @DisplayName("게시글 삭제")
     @Test
     void deletePosts() {
-        String requestPath = "/posts/{id}";
+        int postId = 0;
+        String requestPath = "/posts/%d".formatted(postId);
 
         ExtractableResponse<Response> response = ApiClient._delete(requestPath);
 

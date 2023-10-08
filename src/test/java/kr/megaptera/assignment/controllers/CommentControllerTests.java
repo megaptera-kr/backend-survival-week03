@@ -54,7 +54,7 @@ class CommentControllerTests {
     @DisplayName("댓글 수정")
     @Test
     void putComments() {
-        int commentId = 1;
+        int commentId = 0;
         int postId = 1;
         String requestPath = "/comments/%d?postId=%d".formatted(commentId, postId);
 
@@ -71,7 +71,7 @@ class CommentControllerTests {
     @DisplayName("댓글 삭제")
     @Test
     void deleteComments() {
-        int commentId = 1;
+        int commentId = 0;
         int postId = 1;
         String requestPath = "/comments/%d?postId=%d".formatted(commentId, postId);
 
