@@ -15,12 +15,7 @@ import java.util.List;
 public class PostController {
     private Long newId = 0L;
 
-    private List<PostDto> postDtos = new ArrayList<>(
-            Arrays.asList(
-                    new PostDto(0L, "title", "content"),
-                    new PostDto(1L, "title", "content")
-            )
-    );
+    private List<PostDto> postDtos = new ArrayList<>();
 
     @GetMapping({"", "/"})
     public List<PostDto> getPosts() {
