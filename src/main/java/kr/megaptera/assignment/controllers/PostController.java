@@ -1,21 +1,25 @@
 package kr.megaptera.assignment.controllers;
 
 import kr.megaptera.assignment.dtos.PostDto;
-import kr.megaptera.assignment.dtos.PostDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/posts")
 public class PostController {
     private Long newId = 0L;
 
-    private List<PostDto> postDtos = new ArrayList<>();
+    private List<PostDto> postDtos = new ArrayList<>(
+            Arrays.asList(
+                    new PostDto(0L, "title", "content"),
+                    new PostDto(1L, "title", "content")
+            )
+    );
 
     @GetMapping({"", "/"})
     public List<PostDto> getPosts() {
@@ -27,7 +31,7 @@ public class PostController {
             PostDto requestPostDto
     ) {
         // 리스트 순회로 post 찾기
-        PostDto responsePostDto = postDtos
+        PostDto responsePostDto = this.postDtos
                 .stream()
                 .filter(
                         postDto -> postDto.getId().equals(requestPostDto.getId())
@@ -57,7 +61,7 @@ public class PostController {
     ) {
         // 리스트 순회로 post 찾기
         // 만약 요청정보로 post를 찾지 못하면 NOT_FOUND 에러 발생
-        PostDto responsePostDto = postDtos
+        PostDto responsePostDto = this.postDtos
                 .stream()
                 .filter(
                         postDto -> postDto.getId().equals(requestPostDto.getId())
@@ -77,7 +81,7 @@ public class PostController {
             PostDto requestPostDto
     ) {
         // 리스트 순회로 post 삭제
-        postDtos.removeIf(postDto -> postDto.getId().equals(requestPostDto.getId()));
+        this.postDtos.removeIf(postDto -> postDto.getId().equals(requestPostDto.getId()));
 
         return "";
     }

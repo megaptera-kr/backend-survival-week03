@@ -32,7 +32,7 @@ class PostControllerTests {
     @DisplayName("게시글 상세 조회")
     @Test
     void getPost() {
-        int postId = 0;
+        Long postId = 0L;
         String requestPath = "/posts/%d".formatted(postId);
 
         ExtractableResponse<Response> response = ApiClient._get(requestPath);
@@ -74,7 +74,7 @@ class PostControllerTests {
     @DisplayName("게시글 삭제")
     @Test
     void deletePosts() {
-        int postId = 0;
+        int postId = 1;
         String requestPath = "/posts/%d".formatted(postId);
 
         ExtractableResponse<Response> response = ApiClient._delete(requestPath);
