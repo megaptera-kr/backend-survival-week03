@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -22,18 +21,18 @@ public class PostController {
         return this.postDtos;
     }
 
-    @GetMapping({"/{id}", "/{id}/"})
+    @GetMapping({"/{postId}", "/{postId}/"})
     public PostDto getPost(
-            PostDto requestPostDto
+            @PathVariable Long postId
     ) {
         // 리스트 순회로 post 찾기
         PostDto responsePostDto = this.postDtos
                 .stream()
                 .filter(
-                        postDto -> postDto.getId().equals(requestPostDto.getId())
+                        postDto -> postDto.getId().equals(postId)
                 )
                 .findAny()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다."));
 
         return responsePostDto;
     }
@@ -41,7 +40,7 @@ public class PostController {
     @PostMapping({"", "/"})
     @ResponseStatus(HttpStatus.CREATED)
     public String postPost(
-            PostDto requestPostDto
+            @RequestBody PostDto requestPostDto
     ) {
         requestPostDto.setId(this.newId++);
 
@@ -53,7 +52,7 @@ public class PostController {
     @PutMapping({"/{id}", "/{id}/"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public String putPost(
-            PostDto requestPostDto
+            @RequestBody PostDto requestPostDto
     ) {
         // 리스트 순회로 post 찾기
         // 만약 요청정보로 post를 찾지 못하면 NOT_FOUND 에러 발생
@@ -71,13 +70,13 @@ public class PostController {
         return "";
     }
 
-    @DeleteMapping({"/{id}", "/{id}/"})
+    @DeleteMapping({"/{postId}", "/{postId}/"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deletePost(
-            PostDto requestPostDto
+            @PathVariable Long postId
     ) {
         // 리스트 순회로 post 삭제
-        this.postDtos.removeIf(postDto -> postDto.getId().equals(requestPostDto.getId()));
+        this.postDtos.removeIf(postDto -> postDto.getId().equals(postId));
 
         return "";
     }

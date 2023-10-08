@@ -1,6 +1,5 @@
 package kr.megaptera.assignment.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.megaptera.assignment.dtos.CommentDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -8,7 +7,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/comments")
@@ -20,13 +18,13 @@ public class CommentController {
 
     @GetMapping({"", "/"})
     public List<CommentDto> getComment(
-            CommentDto requestCommentDto
+            @RequestParam("postId") Long postId
     ) {
         // 리스트 순회로 게시물의 모든 comment 찾기
         List<CommentDto> responseCommentDtos = commentDtos
                 .stream()
                 .filter(
-                        commentDto -> commentDto.getPostId().equals(requestCommentDto.getPostId())
+                        commentDto -> commentDto.getPostId().equals(postId)
                 )
                 .toList();
 
@@ -36,44 +34,48 @@ public class CommentController {
     @PostMapping({"", "/"})
     @ResponseStatus(HttpStatus.CREATED)
     public String postComment(
-            CommentDto requestCommentDto
+            @RequestParam("postId") Long postId,
+            @RequestBody CommentDto requestCommentDto
     ) {
-        requestCommentDto.setId(this.newId++);
+        CommentDto commentDto = new CommentDto(this.newId++, postId, requestCommentDto.getContent());
 
-        this.commentDtos.add(requestCommentDto);
+        this.commentDtos.add(commentDto);
 
         return "Complete!";
     }
 
-    @PutMapping({"/{id}", "/{id}/"})
+    @PutMapping({"/{commentId}", "/{commentId}/"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public String putComment(
-            CommentDto requestCommentDto
+            @PathVariable("commentId") Long commentId,
+            @RequestParam("postId") Long postId,
+            @RequestParam("content") String content
     ) {
         // 리스트 순회로 comment 찾기
         // 만약 요청정보로 comment를 찾지 못하면 NOT_FOUND 에러 발생
         CommentDto responseCommentDto = commentDtos
                 .stream()
                 .filter(
-                        commentDto -> commentDto.getPostId().equals(requestCommentDto.getPostId())
-                            && commentDto.getId().equals(requestCommentDto.getId())
+                        commentDto -> commentDto.getPostId().equals(postId)
+                                && commentDto.getId().equals(commentId)
                 )
                 .findAny()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다."));
 
-        responseCommentDto.setContent(requestCommentDto.getContent());
+        responseCommentDto.setContent(content);
 
         return "";
     }
 
-    @DeleteMapping({"/{id}", "/{id}/"})
+    @DeleteMapping({"/{commentId}", "/{commentId}/"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public String deleteComment(
-            CommentDto requestCommentDto
+            @PathVariable Long commentId,
+            @RequestParam("postId") Long postId
     ) {
         // 리스트 순회로 comment 삭제
-        commentDtos.removeIf(commentDto -> commentDto.getPostId().equals(requestCommentDto.getPostId())
-                && commentDto.getId().equals(requestCommentDto.getId()));
+        commentDtos.removeIf(commentDto -> commentDto.getPostId().equals(postId)
+                && commentDto.getId().equals(commentId));
 
         return "";
     }
