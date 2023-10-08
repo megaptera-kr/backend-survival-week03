@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/comments")
+@CrossOrigin
 public class CommentController {
     private Long newId = 0L;
 
