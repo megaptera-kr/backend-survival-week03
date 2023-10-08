@@ -31,6 +31,7 @@ class PostControllerTests {
 
     @DisplayName("게시글 상세 조회")
     @Test
+    void getPost() {
         int postId = 0;
         String requestPath = "/posts/%d".formatted(postId);
 
