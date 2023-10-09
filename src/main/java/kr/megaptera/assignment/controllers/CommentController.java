@@ -16,9 +16,9 @@ public class CommentController {
     private List<CommentDto> commentDtos = new ArrayList<>();
 
     @GetMapping
-    public List<CommentDto> list(@RequestParam String postId) {
+    public List<CommentDto> listComment(@RequestParam String postId) {
         List<CommentDto> commentDtoList = commentDtos.stream()
-                .filter(i -> i.id().equals(postId))
+                .filter(i -> i.postId().equals(postId))
                 .toList();
 
         return commentDtoList;
