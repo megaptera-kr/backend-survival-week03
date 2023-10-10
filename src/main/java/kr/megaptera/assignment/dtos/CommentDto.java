@@ -1,4 +1,4 @@
 package kr.megaptera.assignment.dtos;
 
-public class CommentDto {
+public record CommentDto (String id, String postId, String content){
 }
