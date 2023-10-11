@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
+@CrossOrigin("http://localhost:8000/")
 public class PostController {
     private Long newId = 0L;
 
@@ -20,7 +21,7 @@ public class PostController {
     }
     @GetMapping("/{id}")
     public PostDto detail(@PathVariable String id){
-        return postDtos.stream().filter(i -> i.getId().equals(id))
+        return postDtos.stream().filter(i -> i.getId().equals(Long.parseLong(id)))
             .findFirst().get();
     }
 
@@ -46,7 +47,7 @@ public class PostController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String id){
         PostDto deleteDto = postDtos.stream()
-            .filter(i -> i.getId().equals(id))
+            .filter(i -> i.getId().equals(Long.parseLong(id)))
             .findFirst()
             .get();
 

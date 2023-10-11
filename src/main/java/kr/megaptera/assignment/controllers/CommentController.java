@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
+@CrossOrigin("http://localhost:8000/")
 public class CommentController {
     private Long newId = 0L;
 
@@ -24,9 +25,6 @@ public class CommentController {
                     result.add(i);
                 }
             });
-
-        System.out.println(postId);
-
         return result;
     }
     @PostMapping
