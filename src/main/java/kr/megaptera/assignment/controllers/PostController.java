@@ -2,86 +2,56 @@ package kr.megaptera.assignment.controllers;
 
 import kr.megaptera.assignment.dtos.PostDto;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/posts")
+@CrossOrigin("http://localhost:8000/")
 public class PostController {
     private Long newId = 0L;
 
-    private List<PostDto> postDtos = new ArrayList<>(List.of());
+    private List<PostDto> postDtos = new ArrayList<>();
 
-    public String createId(){
-        return String.valueOf(this.newId++);
-    }
-    /**
-     * 게시글 전체 조회
-     * @return List<PostDto>
-     */
     @GetMapping
     public List<PostDto> list(){
         return postDtos;
     }
-    /**
-     * 게시글 상세조회
-     * @param id
-     * @return PostDto
-     */
     @GetMapping("/{id}")
     public PostDto detail(@PathVariable String id){
-        PostDto postDto = postDtos.stream()
-                .filter(i -> i.getId().equals(id))
-                .findFirst()
-                .get();
-
-        return postDto;
+        return postDtos.stream().filter(i -> i.getId().equals(Long.parseLong(id)))
+            .findFirst().get();
     }
-    /**
-     * 게시글 추가
-     * @param postDto
-     * @return String
-     */
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String created(@RequestBody PostDto postDto){
-        postDto.setId(createId());
-        postDtos.add(postDto);
+    public String create(@RequestBody PostDto reqBody){
+        reqBody.setId(++newId);
+        postDtos.add(reqBody);
         return "Complete!";
     }
-    /**
-     * 게시글 수정
-     * @param id
-     * @param postDto
-     */
+
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable String id, @RequestBody PostDto postDto){
-        postDtos = postDtos.stream()
-                .map(i -> i.getId().equals(id) ? postDto : i)
-                .collect(Collectors.toList());
+    public void modified(@RequestBody PostDto reqBody){
+        postDtos.forEach(i->{
+                if(i.getId().equals(reqBody.getId())){
+                    i.setTitle(reqBody.getTitle());
+                    i.setContent(reqBody.getContent());
+                }
+            });
     }
-    /**
-     * 게시글 삭제
-     * @param id
-     */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String id){
-        PostDto postDto = postDtos.stream()
-                .filter(i -> i.getId().equals(id))
-                .findFirst()
-                .get();
+        PostDto deleteDto = postDtos.stream()
+            .filter(i -> i.getId().equals(Long.parseLong(id)))
+            .findFirst()
+            .get();
 
-        postDtos.remove(postDto);
+        postDtos.remove(deleteDto);
     }
-
-
-
 
 }

@@ -1,26 +1,25 @@
 package kr.megaptera.assignment.dtos;
 
 public class PostDto {
-    /**
-     * 게시물 ID
-     */
-    private String id;
-    /**
-     * 게시물 제목
-     */
+    private Long id;
     private String title;
-    /**
-     * 게시물 내용
-     */
     private String content;
 
     public PostDto() {
     }
 
-    public PostDto(String id, String title, String content) {
+    public PostDto(Long id, String title, String content) {
         this.id = id;
         this.title = title;
         this.content = content;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -37,13 +36,5 @@ public class PostDto {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 }
