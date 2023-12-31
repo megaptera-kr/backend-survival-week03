@@ -25,8 +25,6 @@ public class CommentController {
 
     @GetMapping()
     public List<CommentDto> getCommentList(@RequestParam String postId) {
-        // TODO(DEBUG): Remove this line.
-        System.out.println("getCommentList()");
         return this.commentDtos.stream()
                 .filter(comment -> comment.getPostId().equals(postId))
                 .toList();
@@ -35,10 +33,6 @@ public class CommentController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public String createComment(@RequestParam String postId, @RequestBody CommentDto commentDto) {
-        // TODO(DEBUG): Remove this line.
-        System.out.println("createComment(" + postId + ", " + commentDto + ")");
-        // 요청할 때 postId 프로퍼티를 입력해도 무시하고 새로운 id를 부여한다.
-        System.out.println(commentDto.getPostId());
         commentDto.setId(String.valueOf(newId++));
         commentDto.setPostId(postId);
         this.commentDtos.add(commentDto);
@@ -50,10 +44,6 @@ public class CommentController {
     public void updateComment(@PathVariable String id,
                               @RequestParam String postId,
                               @RequestBody CommentDto commentDto) {
-        // TODO(DEBUG): Remove this line.
-        System.out.println("updateComment(" + id + ", " + postId + ", " + commentDto + ")");
-        // id로 필터링 한다.
-        // postId는 사용 안 해도 상관없다.
         this.commentDtos.stream()
                 .filter(comment -> comment.getId().equals(id))
                 .findFirst()
@@ -68,11 +58,7 @@ public class CommentController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteComment(@PathVariable String id, @RequestParam String postId) {
-        // TODO(DEBUG): Remove this line.
-        System.out.println("deleteComment(" + id + ", " + postId + ")");
-        // id로 필터링 한다.
-        // postId는 사용 안 해도 상관없다.
+    public void deleteComment(@PathVariable String id) {
         this.commentDtos.removeIf(comment -> comment.getId().equals(id));
     }
 }

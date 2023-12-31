@@ -24,15 +24,11 @@ public class PostController {
 
     @GetMapping
     public List<PostDto> getPostList() {
-        // TODO(DEBUG): Remove this line.
-        System.out.println("getPostList()");
         return this.postDtos;
     }
 
     @GetMapping("/{id}")
     public PostDto getPost(@PathVariable String id) {
-        // TODO(DEBUG): Remove this line.
-        System.out.println("getPost(" + id + ")");
         return this.postDtos.stream()
                 .filter(postDto -> postDto.getId().equals(id))
                 .findFirst()
@@ -41,12 +37,7 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    // @RequestBody  : 요청 본문을 자바 객체로 변환(Deserialization)한다.
     public String createPost(@RequestBody PostDto postDto) {
-        // TODO(DEBUG): Remove this line.
-        System.out.println("createPost(" + postDto + ")");
-        // 요청할 때 id 프로퍼티를 입력해도 무시하고 새로운 id를 부여한다.
-        System.out.println(postDto.getId());
         postDto.setId(String.valueOf(newId++));
         this.postDtos.add(postDto);
         return "Complete!";
@@ -55,10 +46,6 @@ public class PostController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updatePost(@PathVariable String id, @RequestBody PostDto postDto) {
-        // TODO(DEBUG): Remove this line.
-        System.out.println("updatePost(" + id + ", " + postDto + ")");
-        // 요청할 때 RequestBody에 id 프로퍼티로 덮어쓴다.
-        // PathVariable로 받은 id는 객체를 필터링하는 용도로 사용한다.
         this.postDtos.stream().filter(post -> post.getId().equals(id))
                 .findFirst()
                 .ifPresent(post -> {
@@ -71,8 +58,6 @@ public class PostController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePost(@PathVariable String id) {
-        // TODO(DEBUG): Remove this line.
-        System.out.println("deletePost(" + id + ")");
         this.postDtos.removeIf(postDto -> postDto.getId().equals(id));
     }
 }

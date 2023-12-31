@@ -24,9 +24,7 @@ public class PostDto {
     public String getContent() {
         return content;
     }
-
-    // JavaBeans convention : setter
-    // setter가 없으면 boot에서 Json String을 Deserialization할 때 필드 값을 넣어주지 못해 필드 값이 null이 된다.
+    
     public void setId(String id) {
         this.id = id;
     }
