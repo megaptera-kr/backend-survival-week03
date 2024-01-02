@@ -29,12 +29,10 @@ public class PostService {
 
     public PostDto getPost(String id) {
 
-        for (PostDto postDto : postDtos) {
-            if (postDto.getId().equals(id)) {
-                return postDto;
-            }
-        }
-        return null;
+        return postDtos.stream()
+                .filter(i -> i.getId().equals(id))
+                .findFirst()
+                .get();
     }
 
     public void updatePost(String id, PostDto postDto) {

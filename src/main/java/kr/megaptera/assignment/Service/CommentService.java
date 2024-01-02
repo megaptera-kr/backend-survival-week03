@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -15,19 +16,23 @@ public class CommentService {
 
     private Long newId = 0L;
 
-    private final List<CommentDto> commentDtos = new ArrayList<>();
+    private List<CommentDto> commentDtos = new ArrayList<>();
+
     public List<CommentDto> getCommentList(String postId) {
         log.info("postId: {}", postId);
+        List<CommentDto> commentDtosResult = new ArrayList<>();
         for(CommentDto commentDto : commentDtos) {
             if(commentDto.getPostId().equals(postId)) {
-                return commentDtos;
+                commentDtosResult.add(commentDto);
+
             }
         }
-        return null;
+        return commentDtosResult;
     }
 
     public String createComment(String postId, CommentDto commentDto) {
-        commentDto.setId("" + getId());
+        commentDto.setId(getId());
+        commentDto.setPostId(postId);
         commentDtos.add(commentDto);
         return "Completed!";
     }
@@ -42,11 +47,7 @@ public class CommentService {
     }
 
     public void deleteComment(String id, String postId) {
-        for(CommentDto commentDto : commentDtos) {
-            if(commentDto.getId().equals(id) && commentDto.getPostId().equals(postId)) {
-                commentDtos.remove(commentDto);
-            }
-        }
+        commentDtos.removeIf(commentDto -> commentDto.getId().equals(id) && commentDto.getPostId().equals(postId));
     }
 
     private String getId() {
