@@ -3,14 +3,17 @@ package kr.megaptera.assignment.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.megaptera.assignment.dtos.PostDto;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
+@CrossOrigin
 @RestController
 @RequestMapping("/posts")
 public class PostController {
@@ -27,26 +30,23 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public PostDto getPostDetail(@PathVariable("id") String id){
+    public PostDto getPostDetail(@PathVariable("id") Long id){
         return postDtos.stream().filter(post -> post.getId().equals(id)).findFirst().get();
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
-    public String postPost(@RequestParam("title") String title, @RequestParam("content") String content){
-        Long maxId = 0L;
-        if(maxId != 0L) maxId = postDtos.stream().max(Comparator.comparing(PostDto::getId)).get().getId() + 1;
-        PostDto postDto = new PostDto(maxId, title, content);
-        postDtos.add(postDto);
-        return "Complete";
+    public ResponseEntity<String> postPost(@RequestBody PostDto postDto){
+        PostDto addPstDto = new PostDto(++newId, postDto.getTitle(), postDto.getContent());
+        postDtos.add(addPstDto);
+        return ResponseEntity.ok("Complete");
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}")
-    public void putPost(@PathVariable("id") Long id,
-                        @RequestParam("title") String title,
-                        @RequestParam("content") String content){
-        PostDto postDto = new PostDto(id, title, content);
+    public String putPost(@PathVariable("id") Long id, @RequestBody PostDto postDto){
+        System.out.println("id : " + id);
+        System.out.println(postDto);
         postDtos = postDtos.stream().map(dto -> {
             if(dto.getId().equals(id)){
                 return postDto;
@@ -55,13 +55,15 @@ public class PostController {
                 return dto;
             }
         }).collect(Collectors.toList());
+        return "Put!";
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable("id") long id){
+    public String deletePost(@PathVariable("id") Long id){
         postDtos = postDtos.stream()
                 .filter(dto -> !dto.getId().equals(id))
                 .collect(Collectors.toList());
+        return "Delete!";
     }
 }
