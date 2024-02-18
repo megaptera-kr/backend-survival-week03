@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @RestController
 @RequestMapping("/posts")
 public class PostController {
@@ -32,7 +33,7 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping()
-    public String postPost(@PathVariable("title") String title, @PathVariable("content") String content){
+    public String postPost(@RequestParam("title") String title, @RequestParam("content") String content){
         Long maxId = 0L;
         if(maxId != 0L) maxId = postDtos.stream().max(Comparator.comparing(PostDto::getId)).get().getId() + 1;
         PostDto postDto = new PostDto(maxId, title, content);
@@ -43,8 +44,8 @@ public class PostController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}")
     public void putPost(@PathVariable("id") Long id,
-                        @PathVariable("title") String title,
-                        @PathVariable("content") String content){
+                        @RequestParam("title") String title,
+                        @RequestParam("content") String content){
         PostDto postDto = new PostDto(id, title, content);
         postDtos = postDtos.stream().map(dto -> {
             if(dto.getId().equals(id)){

@@ -1,33 +1,33 @@
 package kr.megaptera.assignment.dtos;
 
 public class CommentDto {
-    private String id;
-    private String postId;
+    private Long id;
+    private Long postId;
     private String content;
 
     public CommentDto() {
 
     }
 
-    public CommentDto(String id, String postId, String content) {
+    public CommentDto(Long id, Long postId, String content) {
         this.id = id;
         this.postId = postId;
         this.content = content;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getPostId() {
+    public Long getPostId() {
         return postId;
     }
 
-    public void setPostId(String postId) {
+    public void setPostId(Long postId) {
         this.postId = postId;
     }
 
