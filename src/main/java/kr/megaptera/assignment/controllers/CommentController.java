@@ -31,7 +31,9 @@ public class CommentController {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void editComment(@PathVariable("id")Long id, @RequestParam String postId,@RequestBody CommentDto request){
       var findComment = commentDtos.stream().filter(comment -> comment.getId().equals(id)).findFirst().orElseThrow();
-      findComment = request;
+      findComment.setId(request.getId());
+      findComment.setContent(request.getContent());
+      findComment.setPostId(request.getPostId());
   }
 
   @DeleteMapping("/{id}")

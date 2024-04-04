@@ -33,8 +33,13 @@ public class PostController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void editPost(@PathVariable Long id,@RequestBody PostDto request){
-        var findPost = postDtos.stream().filter(p -> p.getId().equals(id)).findFirst().orElseThrow();
-        findPost = request;
+        var findPost = postDtos.stream().filter(p -> p.getId().equals(id)).findFirst();
+        if(findPost.isEmpty()){
+            throw new RuntimeException();
+        }
+        findPost.get().setId(request.getId());
+        findPost.get().setTitle(request.getTitle());
+        findPost.get().setContent(request.getContent());
     }
 
     @DeleteMapping("/{id}")
