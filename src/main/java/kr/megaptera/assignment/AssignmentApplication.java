@@ -18,7 +18,7 @@ public class AssignmentApplication {
 		@Override
 		public void addCorsMappings(CorsRegistry registry) {
 			registry.addMapping("/**")
-					.allowedOrigins("*")
+					.allowedOriginPatterns("*") // 수정
 					.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 					.allowedHeaders("Authorization", "Content-Type")
 					.exposedHeaders("Custom-Header")
