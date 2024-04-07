@@ -20,7 +20,7 @@ public class AssignmentApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry
 						.addMapping("/**")
-						.allowedMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS")
+						.allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
 						.allowedOrigins("*");
 			}
 		};
