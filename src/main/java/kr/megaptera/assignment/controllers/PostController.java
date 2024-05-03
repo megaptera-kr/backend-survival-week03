@@ -1,7 +1,7 @@
 package kr.megaptera.assignment.controllers;
 
 import kr.megaptera.assignment.dtos.PostDto;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class PostController {
         return postDto;
     }
 
-    // 게시물 수정 PUT /posts/{id}
+    // 게시물 수정 PUT /posts/{id} 상태코드: 204
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public PostDto edit(@PathVariable("id") String id, @RequestBody PostDto dto) {
