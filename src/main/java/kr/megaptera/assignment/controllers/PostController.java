@@ -22,12 +22,20 @@ public class PostController {
     }
 
     // 게시물 생성 POST /posts
+//    @PostMapping
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public PostDto create(@RequestBody PostDto postDto) {
+//        postDto.setId(generateId());
+//        postDtos.add(postDto);
+//        return postDto;
+//    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PostDto create(@RequestBody PostDto postDto) {
+    public String create(@RequestBody PostDto postDto) {
         postDto.setId(generateId());
         postDtos.add(postDto);
-        return postDto;
+        return "Complete";
     }
 
     // 게시물 상세조회 GET /posts/{id}

@@ -22,13 +22,24 @@ public class CommentController {
     }
 
     // 댓글 작성
+//    @PostMapping
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public CommentDto commentPost(@RequestParam("postId") String postId,
+//                                  @RequestBody CommentDto commentDto) {
+//        commentDto.setId(generateId());
+//        commentDto.setPostId(postId);
+//        commentDtos.add(commentDto);
+//        return commentDto;
+//    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CommentDto commentPost(@RequestParam("postId") String postId, @RequestBody CommentDto commentDto) {
+    public String commentPost(@RequestParam("postId") String postId,
+                              @RequestBody CommentDto commentDto) {
         commentDto.setId(generateId());
         commentDto.setPostId(postId);
         commentDtos.add(commentDto);
-        return commentDto;
+        return "Complete";
     }
 
     // 댓글 수정 PUT /comments/{id}?postId={postId}
